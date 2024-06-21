@@ -267,7 +267,7 @@ const cartCheckout = document.getElementById('cart-checkout');
 const statusText = document.getElementById('status-text');
 cartCheckout.addEventListener('click', () => {
 
-  statusText.textContent = 'Заявка оформлена';
+  
   statusText.style.display = 'inline';
     const productsList = cartItems.map(item => `❇️ ${item.title} x ${item.quantity} шт`).join('\n');
     const place = 'Затон 1'; // replace with the actual place from the database
