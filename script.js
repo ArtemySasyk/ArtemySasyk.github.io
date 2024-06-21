@@ -1,14 +1,16 @@
+// Добавляем обработчик события touchstart для предотвращения масштабирования страницы на мобильных устройствах
 document.addEventListener('touchstart', function(event) {
   if (event.touches.length > 1) {
     event.preventDefault();
   }
 }, false);
 
+// Добавляем обработчик события gesturestart для предотвращения масштабирования страницы на мобильных устройствах
 document.addEventListener('gesturestart', function(event) {
   event.preventDefault();
 }, false);
 
-
+// Получаем файл .env и извлекаем из него переменные окружения
 fetch('.env')
   .then(response => response.text())
   .then(envFile => {
@@ -20,10 +22,11 @@ fetch('.env')
 
     const telegramToken = envVars.TOKEN;
     const chatId = envVars.GROUP_ID;
-    console.log(`Telegram token: ${telegramToken}`);
-    console.log(`Chat ID: ${chatId}`);
+    console.log(`Токен Telegram: ${telegramToken}`);
+    console.log(`ID чата: ${chatId}`);
 
 
+// Получаем файл products.json и извлекаем из него данные о продуктах
 fetch('products.json')
 .then(response => response.json())
 .then(data => {
@@ -38,10 +41,12 @@ fetch('products.json')
   const searchInput = document.querySelector('.search-bar input');
   const searchButton = document.querySelector('.search-bar button');
 
+  // Добавляем обработчик события click для кнопки закрытия модального окна корзины
   cartCloseButton.addEventListener('click', () => {
     cartModal.style.display = 'none';
   });
 
+  // Функция отображения продуктов
   function displayProducts(products) {
     productsContainer.innerHTML = '';
 
@@ -66,6 +71,7 @@ fetch('products.json')
     const detailsButtons = document.querySelectorAll('.view-details');
     const closeButton = document.querySelector('.close');
 
+    // Добавляем обработчики события click для кнопок просмотра деталей продукта
     detailsButtons.forEach((button, index) => {
       button.addEventListener('click', () => {
         const product = productsData.find(p => p.title === button.closest('.product').querySelector('.title').textContent);
@@ -73,11 +79,13 @@ fetch('products.json')
       });
     });
 
+    // Добавляем обработчик события click для кнопки закрытия модального окна продукта
     closeButton.addEventListener('click', () => {
       const modal = document.getElementById('product-modal');
       modal.style.display = 'none';
     });
 
+    // Добавляем обработчики события click для кнопок добавления продукта в корзину
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
     addToCartButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -87,6 +95,7 @@ fetch('products.json')
     });
   }
 
+  // Функция отображения модального окна продукта
   function showProductModal(product) {
     const modal = document.getElementById('product-modal');
     modal.style.display = 'flex';
@@ -101,6 +110,7 @@ fetch('products.json')
     modal.querySelector('.modal-image').appendChild(imageElement);
   }
 
+  // Функция добавления продукта в корзину
   function addToCart(product) {
   const index = cartItems.findIndex(item => item.title === product.title);
 
@@ -112,20 +122,19 @@ fetch('products.json')
 
   updateCart();
 
-  // Find the product card element
+
   const productCard = document.querySelector(`.product[data-title="${product.title}"]`);
   let quantityElement;
 
   if (productCard) {
     quantityElement = productCard.querySelector('.quantity');
     if (!quantityElement) {
-      // Create a new quantity element if it doesn't exist
       quantityElement = document.createElement('span');
       quantityElement.className = 'quantity';
       productCard.querySelector('.buttons').appendChild(quantityElement);
     }
 
-    // Update the quantity element text content
+
     quantityElement.textContent = `x ${cartItems.find(item => item.title === product.title).quantity}`;
   }
 
@@ -133,11 +142,13 @@ fetch('products.json')
 
 }
 
+  // Функция обновления корзины
   function updateCart() {
     const uniqueProducts = [...new Set(cartItems.map(item => item.title))];
     cartCount.textContent = uniqueProducts.length;
   }
 
+  // Функция отображения модального окна корзины
   function displayCartModal() {
     if (cartItems.length > 0) {
       cartModal.style.display = 'flex';
@@ -161,30 +172,28 @@ fetch('products.json')
         cartList.innerHTML += cartItem;
       });
 
-      cartCloseButton.addEventListener('click', () => {
-        cartModal.style.display = 'none';
-      });
+      // Добавляем обработчики события click для кнопок обновления количества продукта в корзине
+      const updateQuantityButtons = document.querySelectorAll('.update-quantity');
+      updateQuantityButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const productTitle = button.dataset.productTitle;
+          const index = cartItems.findIndex(item => item.title === productTitle);
+          cartItems[index].quantity++;
+          updateCart();
+          displayCartModal();
 
-const updateQuantityButtons = document.querySelectorAll('.update-quantity');
-    updateQuantityButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const productTitle = button.dataset.productTitle;
-        const index = cartItems.findIndex(item => item.title === productTitle);
-        cartItems[index].quantity++;
-        updateCart();
-        displayCartModal();
 
-        // Update the quantity element on the product card
-        const productCard = document.querySelector(`.product[data-title="${productTitle}"]`);
-        if (productCard) {
-          const quantityElement = productCard.querySelector('.quantity');
-          if (quantityElement) {
-            quantityElement.textContent = `x ${cartItems[index].quantity}`;
+          const productCard = document.querySelector(`.product[data-title="${productTitle}"]`);
+          if (productCard) {
+            const quantityElement = productCard.querySelector('.quantity');
+            if (quantityElement) {
+              quantityElement.textContent = `x ${cartItems[index].quantity}`;
+            }
           }
-        }
+        });
       });
-    });
 
+      // Добавляем обработчики события click для кнопок удаления продукта из корзины
       const removeFromCartButtons = document.querySelectorAll('.remove-from-cart');
       removeFromCartButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -195,7 +204,7 @@ const updateQuantityButtons = document.querySelectorAll('.update-quantity');
             const cartListItem = document.querySelector(`[data-product-title="${productTitle}"]`).closest('li');
             cartListItem.remove();
             updateCart();
-            // Update the quantity element on the product card
+
             const productCard = document.querySelector(`.product[data-title="${productTitle}"]`);
             if (productCard) {
               const quantityElement = productCard.querySelector('.quantity');
@@ -208,7 +217,7 @@ const updateQuantityButtons = document.querySelectorAll('.update-quantity');
             updateCart();
             displayCartModal();
 
-            // Update the quantity element on the product card
+
             const productCard = document.querySelector(`.product[data-title="${productTitle}"]`);
             if (productCard) {
               const quantityElement = productCard.querySelector('.quantity');
@@ -244,10 +253,10 @@ const updateQuantityButtons = document.querySelectorAll('.update-quantity');
     });
   });
 
-// Add the active class to the Coffee tab
+
   tabs[0].classList.add('active');
 
-  // Call displayProducts initially with the "coffee" category
+  // Вызов дисплея с начальным окном
   displayProducts(productsData);
 
   cartButton.addEventListener('click', displayCartModal);
@@ -271,9 +280,9 @@ cartCheckout.addEventListener('click', () => {
 📍Место: ${place}
 🛒Список продукции:
 ${productsList}`;
-
-    // Send message to group chat
+console.log(`Токен Telegram: ${telegramToken}`);
     fetch(`https://api.telegram.org/bot${encodeURIComponent(telegramToken)}/sendMessage`, {
+
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -281,36 +290,15 @@ ${productsList}`;
       body: JSON.stringify({
         chat_id: chatId,
         text: messageText
+
       })
+
     })
-   .then(response => response.json())
-   .then(() => {
-      // Get the user's chat ID
-      fetch(`https://api.telegram.org/bot${encodeURIComponent(telegramToken)}/getUpdates`)
-       .then(response => response.json())
-       .then(updates => {
-          const userId = updates.result[0].message.from.id;
-
-          // Send message to the user
-          fetch(`https://api.telegram.org/bot${encodeURIComponent(telegramToken)}/sendMessage`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              chat_id: userId,
-              text: messageText
-            })
-          })
-         .then(response => response.json());
-        });
-    });
-});
+    .then(response => response.json())
+  });
 
 
-
-});
-  function searchProducts() {
+function searchProducts() {
     const searchTerm = searchInput.value.trim().toLowerCase();
     const filteredProducts = productsData.filter(product => {
       const title = product.title.toLowerCase();
@@ -318,6 +306,8 @@ ${productsList}`;
     });
     displayProducts(filteredProducts);
   }
+});
+
 });
 
 
