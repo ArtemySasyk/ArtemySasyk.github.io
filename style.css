@@ -189,7 +189,7 @@ header {
 
 #shopping-cart {
   position: fixed;
-  top: 0px; /* Change this from bottom to top */
+  top: 0px; 
   right: 20px;
   z-index: 100;
   background-color: #fff;
@@ -242,9 +242,8 @@ header {
 }
 
 #cart-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  max-height: 300px; 
+  overflow-y: auto;
 }
 #status-text {
   color: #1eb500;
@@ -370,14 +369,14 @@ header {
   }
 }
 
-/* Add this to make the grid layout responsive */
+
 .products {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px; /* reduced gap for mobile */
+  grid-gap: 10px; 
 }
 
-/* Make the product cards more compact on mobile */
+
 .product {
   margin: 10px;
   padding: 15px;
@@ -387,21 +386,21 @@ header {
   transition: transform 0.3s ease;
 }
 
-/* Adjust the image size and layout on mobile */
+
 .product img {
   width: 100%;
-  height: 100px; /* fixed height for mobile */
+  height: 100px; 
   object-fit: cover;
   border-radius: 10px 10px 0 0;
 }
 
-/* Adjust the button styles on mobile */
+
 .product button {
   padding: 10px 15px;
   font-size: 14px;
 }
 
-/* Add some media queries to adjust the layout for smaller screens */
+
 @media (max-width: 480px) {
  .products {
     grid-template-columns: repeat(2, 1fr);
