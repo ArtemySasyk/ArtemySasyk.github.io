@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>O`Donuts Auto Supply</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>O`Donuts Auto Supply</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Я ищу...">
+                <button>Искать</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="tabs">
+                <div class="tab active" data-tab="all">Все товары</div>
+                <div class="tab" data-tab="coffee">Кофе</div>
+                <div class="tab" data-tab="milk">Молоко</div>
+                <div class="tab" data-tab="syrups">Сиропы</div>
+                <div class="tab" data-tab="topping">Топпинг</div>
+                <div class="tab" data-tab="juice">Сок</div>
+                <div class="tab" data-tab="glasses">Стаканы</div>
+            </div>
+
+            <div class="products" id="products">
+
+            </div>
+        </div>
+    </main>
+
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-image"></div>
+            <div class="modal-description"></div>
+        </div>
+
+    </div>
+
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Заявка</h2>
+            <ul id="cart-list"></ul>
+            <button id="cart-checkout">Оформить заявку</button>
+<p id="status-text"></p>
+        </div>
+    </div>
+
+    <div id="shopping-cart">
+        <button id="cart-button">Заявка <span id="cart-count">0</span></button>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
